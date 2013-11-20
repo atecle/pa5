@@ -8,7 +8,7 @@
 
 #include "bookorder.h"
 
-
+Customer *customers = NULL;
 
 int main(int argc, char **argv) {
     
@@ -25,13 +25,13 @@ int main(int argc, char **argv) {
         printf("ERROR: File(s) not found");
         exit(0);
     }
-    
-    Customer *customers = NULL;
-    create_db(db, &customers);
+
+    customers = create_db(db);
     
     for (customers; customers!=NULL; customers=customers->hh.next) {
         printf("User id: %d\tName: %s\n", customers->id, customers->name);
     }
     
+    return 1;
     
 }

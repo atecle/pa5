@@ -19,7 +19,12 @@
 #include "uthash.h"
 
 
-typedef struct Customer Customer;
+struct Order {
+    
+    char *title;
+    int id;
+    char *category;
+};
 
 struct Customer {
     char *name;
@@ -29,10 +34,15 @@ struct Customer {
     char *state;
     char *zip;
     UT_hash_handle hh;
-    sem_t mutex;
+    pthread_mutex_t mutex;
 };
 
-void create_db(FILE *db, Customer **customers);
-    
+
+typedef struct Customer Customer;
+typedef struct Order Order;
+
+Customer* create_db(FILE *db);
+
+
 
 #endif

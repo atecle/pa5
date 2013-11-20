@@ -9,9 +9,8 @@
 #define MAX_LEN 1024
 #include "bookorder.h"
 
-extern Customer *customers;
 
-Customer* create_db(FILE *db) {
+void create_db(FILE *db, Customer **customers) {
     
     char line[MAX_LEN];
     char *token;
@@ -37,8 +36,9 @@ Customer* create_db(FILE *db) {
         token = strtok(NULL, "|");
         ctmr->zip = (char*)malloc(sizeof(char)*strlen(token));
         strcpy(ctmr->zip, token);
-        HASH_ADD_INT(customers, id, ctmr);
+        HASH_ADD_INT(*customers, id, ctmr);
         
     }
-    return customers;
 }
+
+void readOrders(FILE *orders);

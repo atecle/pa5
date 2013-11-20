@@ -20,10 +20,10 @@
 
 
 struct Order {
-    
     char *title;
     int id;
     char *category;
+    pthread_mutex_t mutex;
 };
 
 struct Customer {
@@ -41,8 +41,8 @@ struct Customer {
 typedef struct Customer Customer;
 typedef struct Order Order;
 
-Customer* create_db(FILE *db);
+void create_db(FILE *db, Customer **customers);
 
-
+void createOrders(FILE *orders);
 
 #endif

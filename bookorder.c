@@ -70,10 +70,20 @@ void read_orders(FILE *orders) {
         orderlist[index] = order;
         index++;
     }
-    int i;
+    int i, j;
     
-    /*for (i=0; i<index; i++) {
-        printf("Title: %s\tCost: %f\tQuant:%d\tCat:%s\n", orderlist[i]->title, orderlist[i]->cost, orderlist[i]->quantity, orderlist[i]->category);
+    for (i = 0; i < index; i++) {
+        for (j = 0; j < index; j++) {
+            if (strcasecmp(orderlist[i]->category, orderlist[j]->category) < 0) {
+                Order *temp = orderlist[i];
+                orderlist[i] = orderlist[j];
+                orderlist[j] = temp;
+            }
+        }
     }
-     */
+    
+    for (i = 0; i < index; i ++) {
+        printf("%s\n", orderlist[i]->category);
+    }
+    printf("%d\n", index);
 }

@@ -21,7 +21,8 @@
 
 struct Order {
     char *title;
-    int id;
+    float cost;
+    int quantity;
     char *category;
     pthread_mutex_t mutex;
 };
@@ -43,6 +44,6 @@ typedef struct Order Order;
 
 void create_db(FILE *db, Customer **customers);
 
-void createOrders(FILE *orders);
+void read_orders(FILE *orders);
 
 #endif

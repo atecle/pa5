@@ -27,12 +27,11 @@ int main(int argc, char **argv) {
     
     char **categories = malloc(sizeof(char) * strlen(argv[3]));
 
-    int i = 0, index = 0;
-    
+    int index = 0;
     char *token = NULL;
+    
     for (token = strtok(argv[3], " "); token != NULL; token = strtok(NULL, " ")) {
         categories[index] = token;
-        printf("%s\n", categories[index]);
         index++;
     }
     
@@ -42,6 +41,8 @@ int main(int argc, char **argv) {
     create_db(db, &customers);
     
     pthread_t thr1, thr2;
+    
+    read_orders(orders);
     
     
     return 1;

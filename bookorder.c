@@ -1,6 +1,6 @@
 //
 //  bookorder->c
-//  
+//
 //
 //  Created by Adam on 11/14/13.
 //
@@ -14,7 +14,6 @@ void create_db(FILE *db, Customer **customers) {
     
     char line[MAX_LEN];
     char *token;
-    int size = 0;
     
     while (fgets(line, MAX_LEN, db)) {
         
@@ -41,4 +40,40 @@ void create_db(FILE *db, Customer **customers) {
     }
 }
 
-void readOrders(FILE *orders);
+void read_orders(FILE *orders) {
+    
+    Order **orderlist = NULL;
+    
+    int index = 0, size = 0;
+    char line[MAX_LEN];
+    char *token;
+    
+    while (fgets(line, MAX_LEN, orders)) size++;
+    
+    orderlist = malloc(sizeof(Order) * size);
+    
+    rewind(orders);
+    
+    while (fgets(line, MAX_LEN, orders)) {
+        Order *order = NULL;
+        order = (Order*)malloc(sizeof(Order));
+        token = strtok(line, "|");
+        order->title = malloc(sizeof(char) * strlen(token));
+        strcpy(order->title, token);
+        token = strtok(NULL, "|");
+        order->cost = atof(token);
+        token = strtok(NULL, "|");
+        order->quantity = atoi(token);
+        token = strtok(NULL, "|");
+        order->category = (char*)malloc(sizeof(char) * strlen(token));
+        strcpy(order->category, token);
+        orderlist[index] = order;
+        index++;
+    }
+    int i;
+    
+    /*for (i=0; i<index; i++) {
+        printf("Title: %s\tCost: %f\tQuant:%d\tCat:%s\n", orderlist[i]->title, orderlist[i]->cost, orderlist[i]->quantity, orderlist[i]->category);
+    }
+     */
+}

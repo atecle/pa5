@@ -24,26 +24,16 @@ int main(int argc, char **argv) {
         printf("ERROR: File(s) not found");
         exit(0);
     }
+  
+    create_cat(argv[3]);
     
-    char **categories = malloc(sizeof(char) * strlen(argv[3]));
-
-    int index = 0;
-    char *token = NULL;
-    
-    for (token = strtok(argv[3], " "); token != NULL; token = strtok(NULL, " ")) {
-        categories[index] = token;
-        index++;
-    }
-    
-    
-
-    Customer *customers = NULL;
-    create_db(db, &customers);
+    create_db(db);
     
     pthread_t thr1, thr2;
     
-    read_orders(orders);
-    
+ 
+    pthread_create(&thr1, NULL, (void*)&read_orders, (void*)orders);
+    //pthread_join(thr1, NULL);
     
     return 1;
     

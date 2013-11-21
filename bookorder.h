@@ -19,11 +19,23 @@
 #include "uthash.h"
 
 
+typedef struct Customer Customer;
+typedef struct Order Order;
+typedef struct Cat Cat;
+
+struct Cat {
+    char *category;
+    int index; // index in the Queue array
+    UT_hash_handle hh; 
+};
+
 struct Order {
     char *title;
     float cost;
     int quantity;
     char *category;
+    Order *next;
+    Order *prev;
     pthread_mutex_t mutex;
 };
 
@@ -38,12 +50,9 @@ struct Customer {
     pthread_mutex_t mutex;
 };
 
-
-typedef struct Customer Customer;
-typedef struct Order Order;
-
-void create_db(FILE *db, Customer **customers);
-
+void create_cat(char *categories);
+void create_db(FILE *db);
 void read_orders(FILE *orders);
+
 
 #endif

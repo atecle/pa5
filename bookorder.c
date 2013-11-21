@@ -9,8 +9,27 @@
 #define MAX_LEN 1024
 #include "bookorder.h"
 
+Customer *customers = NULL;
+Order **orderlist = NULL;
+Cat *cat = NULL;
 
-void create_db(FILE *db, Customer **customers) {
+
+void create_cat(char *categories) {
+    
+    int index = 0;
+    char *token = NULL;
+    
+    for (token = strtok(categories, " "); token != NULL; token = strtok(NULL, " ")) {
+        Cat *item = malloc(sizeof(Cat));
+        item->category = (char*)malloc(sizeof(char)*strlen(token));
+        strcpy(item->category, token);
+        item->index = index;
+        HASH_ADD_STR(cat, category, item);
+    }
+}
+
+
+void create_db(FILE *db) {
     
     char line[MAX_LEN];
     char *token;
@@ -35,15 +54,13 @@ void create_db(FILE *db, Customer **customers) {
         token = strtok(NULL, "|");
         ctmr->zip = (char*)malloc(sizeof(char)*strlen(token));
         strcpy(ctmr->zip, token);
-        HASH_ADD_INT(*customers, id, ctmr);
+        HASH_ADD_INT(customers, id, ctmr);
         
     }
 }
 
 void read_orders(FILE *orders) {
-    
-    Order **orderlist = NULL;
-    
+
     int index = 0, size = 0;
     char line[MAX_LEN];
     char *token;
@@ -72,7 +89,7 @@ void read_orders(FILE *orders) {
     }
     int i, j;
     
-    for (i = 0; i < index; i++) {
+    for (i = 0; i < index; i++) { //sort according to category. need to make less awful
         for (j = 0; j < index; j++) {
             if (strcasecmp(orderlist[i]->category, orderlist[j]->category) < 0) {
                 Order *temp = orderlist[i];
@@ -82,8 +99,7 @@ void read_orders(FILE *orders) {
         }
     }
     
-    for (i = 0; i < index; i ++) {
-        printf("%s\n", orderlist[i]->category);
-    }
-    printf("%d\n", index);
+    printf("%s\n", orderlist[0]->category);
+    
 }
+

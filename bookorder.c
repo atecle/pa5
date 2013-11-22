@@ -12,7 +12,7 @@
 
 Customer *customers = NULL;
 Cat *cat = NULL;
-Queue* bookorders = malloc(sizeof(Queue) *100);
+Queue *bookorders[100];
 
 void create_cat(char *categories) {
     
@@ -30,6 +30,8 @@ void create_cat(char *categories) {
     
     for (i; i < index; i++) {
         Queue *queue = NULL;
+        queue = malloc(sizeof(Queue));
+        bookorders[i] = malloc(sizeof(Queue));
         bookorders[i] = queue;
     }
 }
@@ -86,14 +88,14 @@ void read_orders(FILE *orders) {
         Cat *temp = NULL;
         HASH_FIND_STR(cat, order->category, temp);
         int x = temp->index;
-        DL_APPEND(bookorders[x], order);
+        //DL_APPEND(bookorders[x], order);
         
     }
    
 }
 
 void push(Queue *head, Order *order) {
-    DL_APPEND(head, order);
+    //DL_APPEND(head, order);
 }
 
 Queue* pop(Queue *queue) {

@@ -22,6 +22,7 @@
 typedef struct Customer Customer;
 typedef struct Order Order;
 typedef struct Cat Cat;
+typedef struct Queue Queue;
 
 struct Cat {
     char *category;
@@ -29,13 +30,17 @@ struct Cat {
     UT_hash_handle hh; 
 };
 
+struct Queue {
+    Order *element;
+    Queue *prev;
+    Queue *next;
+};
+
 struct Order {
     char *title;
     float cost;
     int quantity;
     char *category;
-    Order *next;
-    Order *prev;
     pthread_mutex_t mutex;
 };
 
@@ -53,6 +58,8 @@ struct Customer {
 void create_cat(char *categories);
 void create_db(FILE *db);
 void read_orders(FILE *orders);
+Queue* pop(Queue *queue);
+void push(Queue *queue, Order *order);
 
 
 #endif

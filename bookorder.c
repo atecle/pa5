@@ -8,23 +8,29 @@
 
 #define MAX_LEN 1024
 #include "bookorder.h"
+#include "utlist.h"
 
 Customer *customers = NULL;
-Order **orderlist = NULL;
 Cat *cat = NULL;
-
+Queue* bookorders = malloc(sizeof(Queue) *100);
 
 void create_cat(char *categories) {
     
-    int index = 0;
+    int index = 0, i = 0;
     char *token = NULL;
     
     for (token = strtok(categories, " "); token != NULL; token = strtok(NULL, " ")) {
         Cat *item = malloc(sizeof(Cat));
         item->category = (char*)malloc(sizeof(char)*strlen(token));
         strcpy(item->category, token);
-        item->index = index;
+        item->index = index++;
         HASH_ADD_STR(cat, category, item);
+    }
+    
+    
+    for (i; i < index; i++) {
+        Queue *queue = NULL;
+        bookorders[i] = queue;
     }
 }
 
@@ -60,16 +66,9 @@ void create_db(FILE *db) {
 }
 
 void read_orders(FILE *orders) {
-
-    int index = 0, size = 0;
+    int index = 0;
     char line[MAX_LEN];
     char *token;
-    
-    while (fgets(line, MAX_LEN, orders)) size++;
-    
-    orderlist = malloc(sizeof(Order) * size);
-    
-    rewind(orders);
     
     while (fgets(line, MAX_LEN, orders)) {
         Order *order = NULL;
@@ -84,22 +83,20 @@ void read_orders(FILE *orders) {
         token = strtok(NULL, "|");
         order->category = (char*)malloc(sizeof(char) * strlen(token));
         strcpy(order->category, token);
-        orderlist[index] = order;
-        index++;
+        Cat *temp = NULL;
+        HASH_FIND_STR(cat, order->category, temp);
+        int x = temp->index;
+        DL_APPEND(bookorders[x], order);
+        
     }
-    int i, j;
-    
-    for (i = 0; i < index; i++) { //sort according to category. need to make less awful
-        for (j = 0; j < index; j++) {
-            if (strcasecmp(orderlist[i]->category, orderlist[j]->category) < 0) {
-                Order *temp = orderlist[i];
-                orderlist[i] = orderlist[j];
-                orderlist[j] = temp;
-            }
-        }
-    }
-    
-    printf("%s\n", orderlist[0]->category);
+   
+}
+
+void push(Queue *head, Order *order) {
+    DL_APPEND(head, order);
+}
+
+Queue* pop(Queue *queue) {
     
 }
 

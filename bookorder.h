@@ -58,8 +58,8 @@ struct Customer {
 void create_cat(char *categories);
 void create_db(FILE *db);
 void read_orders(FILE *orders);
-Queue* pop(Queue *queue);
-void push(Queue *queue, Order *order);
+Queue* dequeue(Queue *queue);
+void enqueue(int index, Order *order);
 
 
 #endif

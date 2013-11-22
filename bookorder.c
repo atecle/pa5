@@ -87,18 +87,17 @@ void read_orders(FILE *orders) {
         strcpy(order->category, token);
         Cat *temp = NULL;
         HASH_FIND_STR(cat, order->category, temp);
-        int x = temp->index;
-        //DL_APPEND(bookorders[x], order);
+        enqueue(temp->index, order);
         
     }
    
 }
 
-void push(Queue *head, Order *order) {
-    //DL_APPEND(head, order);
+void enqueue(int index, Order *order) {
+    DL_APPEND(bookorders[index], order);
 }
 
-Queue* pop(Queue *queue) {
+Queue* dequeue(Queue *queue) {
     
 }
 

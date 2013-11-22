@@ -27,7 +27,6 @@ void create_cat(char *categories) {
         HASH_ADD_STR(cat, category, item);
     }
     
-
     for (i; i < 100; i++) {
         bookorders[i] = NULL;
     }
@@ -83,18 +82,20 @@ void read_orders(FILE *orders) {
         token = strtok(NULL, "|");
         order->category = (char*)malloc(sizeof(char) * strlen(token));
         strcpy(order->category, token);
-        Cat *temp = NULL;
+        printf("Word: %s\t Len: %d\n", order->category, strlen(order->category));
+        Cat *temp;
         HASH_FIND_STR(cat, order->category, temp);
         Queue *tmp = malloc(sizeof(Queue));
         tmp->element = order;
-        enqueue(temp->index, tmp);
+        if (temp == NULL) printf("NULL AS FUCK\n");
+        //enqueue(temp->index, tmp);
         
     }
     
     int i;
     for ( i = 0; i < 6; i++) {
         if (bookorders[i] == NULL) {
-            printf("null\n");
+            printf("i am null\n");
             continue;
         }
        printf(" %s\n", bookorders[i]->element->category);
@@ -103,8 +104,11 @@ void read_orders(FILE *orders) {
 }
 
 void enqueue(int index, Queue *order) {
+    printf("I AM TESTING MY CODE\n");
     bookorders[index] = (Queue*)malloc(sizeof(Queue));
+    printf("I HATE PTHREADS\n");
     DL_APPEND(bookorders[index], order);
+    printf("I KNOW FORTRAN\n");
 }
 
 Queue* dequeue(Queue *queue) {

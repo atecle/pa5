@@ -65,7 +65,23 @@ void create_db(FILE *db) {
     }
 }
 
+char* read_helper(char *s){
+	char *ptr;
+	char arr[strlen(s)];
+	int index=0;
+	for(ptr=s;*ptr!=NULL;ptr++){
+		if(isalnum(ptr)!=0){
+			arr[index] = ptr;
+			index++;
+		}
+	}
+	arr[index] = '\0';
+	return arr;
+}
+
 void read_orders(FILE *orders) {
+    char word[5] = read_helper(" words ");
+    printf("%s\n", word);
     int index = 0;
     char line[MAX_LEN];
     char *token;

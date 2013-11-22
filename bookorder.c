@@ -27,13 +27,12 @@ void create_cat(char *categories) {
         HASH_ADD_STR(cat, category, item);
     }
     
-    
-    for (i; i < index; i++) {
-        Queue *queue = NULL;
-        queue = malloc(sizeof(Queue));
-        bookorders[i] = malloc(sizeof(Queue));
-        bookorders[i] = queue;
+
+    for (i; i < 100; i++) {
+        bookorders[i] = NULL;
     }
+    
+   
 }
 
 
@@ -71,7 +70,6 @@ void read_orders(FILE *orders) {
     int index = 0;
     char line[MAX_LEN];
     char *token;
-    
     while (fgets(line, MAX_LEN, orders)) {
         Order *order = NULL;
         order = (Order*)malloc(sizeof(Order));
@@ -87,15 +85,25 @@ void read_orders(FILE *orders) {
         strcpy(order->category, token);
         Cat *temp = NULL;
         HASH_FIND_STR(cat, order->category, temp);
-	Queue *tmp = malloc(sizeof(Queue));
-	tmp->element = order;
+        Queue *tmp = malloc(sizeof(Queue));
+        tmp->element = order;
         enqueue(temp->index, tmp);
         
     }
-   
+    
+    int i;
+    for ( i = 0; i < 6; i++) {
+        if (bookorders[i] == NULL) {
+            printf("null\n");
+            continue;
+        }
+       printf(" %s\n", bookorders[i]->element->category);
+    }
+    
 }
 
 void enqueue(int index, Queue *order) {
+    bookorders[index] = (Queue*)malloc(sizeof(Queue));
     DL_APPEND(bookorders[index], order);
 }
 

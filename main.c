@@ -32,7 +32,7 @@ int main(int argc, char **argv) {
     pthread_t thr1, thr2;
     
  
-    pthread_create(&thr1, NULL, (void*)&read_orders, (void*)orders);
+    //pthread_create(&thr1, NULL, (void*)&read_orders, (void*)orders);
     //pthread_join(thr1, NULL);
     
     return 1;

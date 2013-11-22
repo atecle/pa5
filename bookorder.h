@@ -59,7 +59,7 @@ void create_cat(char *categories);
 void create_db(FILE *db);
 void read_orders(FILE *orders);
 Queue* dequeue(Queue *queue);
-void enqueue(int index, Order *order);
+void enqueue(int index, Queue *order);
 
 
 #endif

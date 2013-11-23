@@ -30,7 +30,8 @@ void create_cat(char *categories) {
     }
     
     for (i; i < 100; i++) {
-        bookorders[i] = NULL;
+        Queue *q = NULL;
+        bookorders[i] = q;
     }
     
     
@@ -106,20 +107,15 @@ void read_orders(FILE *orders) {
         HASH_FIND_STR(cat, order->category, temp);
         Queue *q = malloc(sizeof(Queue));
         q->element = order;
-        enqueue(temp->index, q);
+        //enqueue(temp->index, q);
     }
     
-    int i;
-    for (i = 0; i < 6; i++) {
-        if (bookorders[i] == NULL) {
-            printf("%s\n", bookorders[i]->element->category);
-        }
-    }
+   
     
 }
 
 void enqueue(int index, Queue *order) {
-    bookorders[index] = (Queue*)malloc(sizeof(Queue));
+    
     DL_APPEND(bookorders[index], order);
   
 }

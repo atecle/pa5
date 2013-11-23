@@ -9,6 +9,7 @@
 #ifndef _bookorder_h
 #define _bookorder_h
 
+#define MAX_LEN 1024
 #include <semaphore.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -26,8 +27,8 @@ typedef struct Cat Cat;
 typedef struct Queue Queue;
 
 struct Cat {
-    char *category;
-    int index; // index in the Queue array
+    char category[MAX_LEN];         //easier to use uthash when string keys are static arrays not pointers
+    int index;                      // index in the Queue array
     UT_hash_handle hh; 
 };
 
@@ -38,20 +39,20 @@ struct Queue {
 };
 
 struct Order {
-    char *title;
+    char title[MAX_LEN];
     float cost;
     int quantity;
-    char *category;
+    char category[MAX_LEN];         // key
     pthread_mutex_t mutex;
 };
 
 struct Customer {
-    char *name;
-    int id;  // key
+    char name[MAX_LEN];
+    int id;                            // key
     float debit;
-    char *address;
-    char *state;
-    char *zip;
+    char address[MAX_LEN];
+    char state[MAX_LEN];
+    char zip[MAX_LEN];
     UT_hash_handle hh;
     pthread_mutex_t mutex;
 };
@@ -61,6 +62,7 @@ void create_db(FILE *db);
 void read_orders(FILE *orders);
 Queue* dequeue(Queue *queue);
 void enqueue(int index, Queue *order);
+char *read_helper(char *token, char *ret);
 
 
 #endif

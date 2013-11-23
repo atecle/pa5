@@ -20,8 +20,10 @@ void create_cat(char *categories) {
     char *token = NULL;
     
     for (token = strtok(categories, " "); token != NULL; token = strtok(NULL, " ")) {
-        Cat *item = malloc(sizeof(Cat));
-        item->category = (char*)malloc(sizeof(char)*strlen(token));
+        Cat *item =  NULL;
+        item = malloc(sizeof(Cat));
+        char ret[strlen(token)];
+        token = read_helper(token, ret);
         strcpy(item->category, token);
         item->index = index++;
         HASH_ADD_STR(cat, category, item);
@@ -31,7 +33,7 @@ void create_cat(char *categories) {
         bookorders[i] = NULL;
     }
     
-   
+    
 }
 
 
@@ -45,86 +47,81 @@ void create_db(FILE *db) {
         Customer *ctmr = NULL;
         ctmr = (Customer*)malloc(sizeof(Customer));
         token = strtok(line, "|");
-        ctmr->name = (char*)malloc(sizeof(char) * strlen(token));
         strcpy(ctmr->name, token);
         token = strtok(NULL, "|");
         ctmr->id = atoi(token);
         token = strtok(NULL, "|");
         ctmr->debit = atof(token);
         token = strtok(NULL, "|");
-        ctmr->address = (char*)malloc(sizeof(char)*strlen(token));
         strcpy(ctmr->address, token);
         token = strtok(NULL, "|");
-        ctmr->state = (char*)malloc(sizeof(char)*strlen(token));
         strcpy(ctmr->state, token);
         token = strtok(NULL, "|");
-        ctmr->zip = (char*)malloc(sizeof(char)*strlen(token));
         strcpy(ctmr->zip, token);
         HASH_ADD_INT(customers, id, ctmr);
         
     }
 }
 
-char* read_helper(char *s){
-	char *ptr;
-	char arr[strlen(s)];
-	int index=0;
-	for(ptr=s;*ptr!=NULL;ptr++){
-		if(isalnum(ptr)!=0){
-			arr[index] = ptr;
-			index++;
-		}
-	}
-	arr[index] = '\0';
-	return arr;
+char* read_helper(char *s, char *ret) {
+    
+    int i, index = 0;
+    for (i = 0; i < strlen(s); i++) {
+        if (isalnum((int)s[i])) {
+            ret[index] = s[i];
+            index++;
+        }
+    }
+    
+    ret[index] = '\0';
+    return ret;
 }
 
 void read_orders(FILE *orders) {
-    char word[5] = read_helper(" words ");
-    printf("%s\n", word);
+    
+    
     int index = 0;
     char line[MAX_LEN];
     char *token;
     while (fgets(line, MAX_LEN, orders)) {
+        
         Order *order = NULL;
         order = (Order*)malloc(sizeof(Order));
+        
         token = strtok(line, "|");
-        order->title = malloc(sizeof(char) * strlen(token));
         strcpy(order->title, token);
+    
         token = strtok(NULL, "|");
         order->cost = atof(token);
+        
         token = strtok(NULL, "|");
         order->quantity = atoi(token);
-        token = strtok(NULL, "|");
-        order->category = (char*)malloc(sizeof(char) * strlen(token));
+       
+        token = strtok(NULL, "|");                                  //tokenized category has trailing space that will cause hash_find to return null
+        char ret[strlen(token)];
+        token = read_helper(token, ret);
         strcpy(order->category, token);
-        printf("Word: %s\t Len: %d\n", order->category, strlen(order->category));
-        Cat *temp;
+       
+        Cat *temp = NULL;
         HASH_FIND_STR(cat, order->category, temp);
-        Queue *tmp = malloc(sizeof(Queue));
-        tmp->element = order;
-        if (temp == NULL) printf("NULL AS FUCK\n");
-        //enqueue(temp->index, tmp);
-        
+        Queue *q = malloc(sizeof(Queue));
+        q->element = order;
+        enqueue(temp->index, q);
     }
     
     int i;
-    for ( i = 0; i < 6; i++) {
+    for (i = 0; i < 6; i++) {
         if (bookorders[i] == NULL) {
-            printf("i am null\n");
-            continue;
+            printf("%s\n", bookorders[i]->element->category);
         }
-       printf(" %s\n", bookorders[i]->element->category);
     }
     
 }
 
 void enqueue(int index, Queue *order) {
-    printf("I AM TESTING MY CODE\n");
     bookorders[index] = (Queue*)malloc(sizeof(Queue));
-    printf("I HATE PTHREADS\n");
     DL_APPEND(bookorders[index], order);
-    printf("I KNOW FORTRAN\n");
+  
 }
 
 Queue* dequeue(Queue *queue) {

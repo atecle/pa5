@@ -107,7 +107,12 @@ void read_orders(FILE *orders) {
         HASH_FIND_STR(cat, order->category, temp);
         Queue *q = malloc(sizeof(Queue));
         q->element = order;
-        //enqueue(temp->index, q);
+        enqueue(temp->index, q);
+    }
+    
+    for (cat; cat!=NULL; cat= cat->hh.next) {
+        int x = cat->index;
+        printf("%s\n", bookorders[x]->element->category);
     }
     
    

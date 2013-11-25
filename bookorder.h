@@ -56,6 +56,9 @@ struct Customer {
     pthread_mutex_t mutex;
 };
 
+extern Cat *cat;
+extern Queue *bookorders[];
+
 void create_cat(char *categories);
 void create_db(FILE *db);
 void read_orders(FILE *orders);

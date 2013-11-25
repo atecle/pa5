@@ -91,18 +91,18 @@ void read_orders(FILE *orders) {
         
         token = strtok(line, "|");
         strcpy(order->title, token);
-    
+        
         token = strtok(NULL, "|");
         order->cost = atof(token);
         
         token = strtok(NULL, "|");
         order->quantity = atoi(token);
-       
+        
         token = strtok(NULL, "|");                                  //tokenized category has trailing space that will cause hash_find to return null
         char ret[strlen(token)];
         token = read_helper(token, ret);
         strcpy(order->category, token);
-       
+        
         Cat *temp = NULL;
         HASH_FIND_STR(cat, order->category, temp);
         Queue *q = malloc(sizeof(Queue));
@@ -115,27 +115,31 @@ void read_orders(FILE *orders) {
         printf("%s\n", bookorders[x]->element->category);
     }
     
-   
+    
     
 }
 
 void enqueue(int index, Queue *order) {
     
     DL_APPEND(bookorders[index], order);
-  
-}
-
-Queue* dequeue(char *string) {
-    Queue ptr;
-    Cat *temp = NULL;
-    HASH_FIND_STR(cat, string, temp);
-    if (temp == NULL){
-	return NULL; //exception
-    }else{
-	ptr = bookorder[temp->index);
-	DL_DELETE(ptr. ptr);
-    }
-    return ptr;
     
 }
 
+Queue* dequeue(char *string) {
+    Queue *ptr;
+    Cat *temp = NULL;
+    HASH_FIND_STR(cat, string, temp);
+    
+    if (temp == NULL)
+    {
+        return NULL; //exception
+    }
+    else
+    {
+        ptr = bookorders[temp->index];
+        DL_DELETE(ptr, ptr);
+    }
+        return ptr;
+                        
+}
+                        

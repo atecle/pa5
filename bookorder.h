@@ -60,7 +60,7 @@ struct Customer {
 void create_cat(char *categories);
 void create_db(FILE *db);
 void read_orders(FILE *orders);
-Queue* dequeue(Queue *queue);
+Queue* dequeue(char *category);
 void enqueue(int index, Queue *order);
 char *read_helper(char *token, char *ret);
 

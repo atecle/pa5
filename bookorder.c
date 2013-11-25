@@ -144,9 +144,10 @@ Queue* dequeue(char *string) {
 void process_order(Queue *q){
 	
     
-	Customer *tmp;
+	Customer *tmp = NULL;
 	HASH_FIND_INT(customers, &(q->element->cust_id), tmp);
-	while (tmp==NULL){
+    
+	while (tmp != NULL){
         
 		if((tmp->debit - q->element->cost) > 0) {
             
@@ -159,8 +160,10 @@ void process_order(Queue *q){
 			//do something
             
 		}
+        
+        q=q->next;
         HASH_FIND_INT(customers, &(q->element->cust_id), tmp);
         printf("in processorder\n");
 	}
-    
+    printf("test\n");
 }

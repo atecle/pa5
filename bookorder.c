@@ -73,7 +73,7 @@ void create_db(FILE *db) {
         
         pthread_mutex_init(&ctmr->mutex, NULL);
         pthread_mutex_init(&f_ctmr->mutex, NULL);
-    
+        
         Report *rep = NULL;
         rep = (Report*)malloc(sizeof(Report));
         rep->customer = f_ctmr;
@@ -160,26 +160,34 @@ Queue* dequeue(char *string) {
     
 }
 
-void process_order(Queue *q){
-	
-    int count = 0;
+void process_order(Queue *q) {
     
 	Customer *tmp = NULL;
+    Report *person = NULL;
+    
 	HASH_FIND_INT(customers, &(q->element->cust_id), tmp);
     
 	while (tmp != NULL) {
         
-       count++;
-        printf("Count: %d\t Cat: %s\n", count, q->element->category);
-		if((tmp->debit - q->element->cost) > 0) {
+        HASH_FIND_INT(report, &(q->element->cust_id), person);
+        
+		if  ((tmp->debit - q->element->cost) > 0) {                     //success
             
+            pthread_mutex_lock(&person->lock);
 			pthread_mutex_lock(&tmp->mutex);
 			tmp->debit = tmp->debit - q->element->cost;
+            person->customer->debit = tmp->debit;
+            q->amount = tmp->debit;
+            LL_APPEND(person->successes, q);
 			pthread_mutex_unlock(&tmp->mutex);
+            pthread_mutex_unlock(&person->lock);
             
-		} else {
             
-			//do something
+		} else {                                                        //failure
+            
+            pthread_mutex_lock(&person->lock);
+            LL_APPEND(person->failures, q);
+            pthread_mutex_unlock(&person->lock);
             
 		}
         

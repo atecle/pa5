@@ -43,12 +43,10 @@ int main(int argc, char **argv) {
     }
     
     int j;
+    
     for (j = 0; j <= i; j++) {
         pthread_join(thread_array[j], NULL);
     }
-    
-    
-    pthread_t thr1, thr2;
     
     return 1;
     

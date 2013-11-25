@@ -113,25 +113,6 @@ void read_orders(FILE *orders) {
         enqueue(temp->index, q);
     }
     
-    /* for (cat; cat!=NULL; cat= cat->hh.next) {
-     int x = cat->index;
-     printf("%s\n", bookorders[x]->element->category);
-     }*/
-    
-    
-    Queue *que = dequeue("HOUSING01");
-    printf("Title: %s\t Cost: %f\t Quant: %d\t Cat: %s \n", que->element->title, que->element->cost, que->element->cust_id, que->element->category);
-    process_order(que);
-    
-    /* Cat *tmp=NULL;
-     HASH_FIND_STR(cat, "HOUSING01", tmp);
-     if (tmp == NULL) {
-     printf("who knows\n");
-     }else{
-     printf("this is the int %d\n", tmp->index);
-     } */
-    
-    
 }
 
 void enqueue(int index, Queue *order) {
@@ -165,16 +146,21 @@ void process_order(Queue *q){
     
 	Customer *tmp;
 	HASH_FIND_INT(customers, &(q->element->cust_id), tmp);
-	if(tmp==NULL){
-		printf("NULL, do something here");
-	}else{
-		if((tmp->debit - q->element->cost) >0){
+	while (tmp==NULL){
+        
+		if((tmp->debit - q->element->cost) > 0) {
+            
 			pthread_mutex_lock(&tmp->mutex);
 			tmp->debit = tmp->debit - q->element->cost;
 			pthread_mutex_unlock(&tmp->mutex);
-		}else{
+            
+		} else {
+            
 			//do something
+            
 		}
+        HASH_FIND_INT(customers, &(q->element->cust_id), tmp);
+        printf("in processorder\n");
 	}
-    printf("in processorder\n");
+    
 }

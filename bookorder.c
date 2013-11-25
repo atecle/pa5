@@ -115,9 +115,10 @@ void read_orders(FILE *orders) {
         int x = cat->index;
         printf("%s\n", bookorders[x]->element->category);
     }*/
+    
 
     Queue *que = dequeue("HOUSING01");
-    printf("%s\n", que->element->category);
+    printf("Title: %s\t Cost: %f\t Quant: %d\t Cat: %s \n", que->element->title, que->element->cost, que->element->quantity, que->element->category);
     
    /* Cat *tmp=NULL;
     HASH_FIND_STR(cat, "HOUSING01", tmp);

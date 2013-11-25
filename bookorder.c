@@ -115,9 +115,15 @@ void read_orders(FILE *orders) {
         printf("%s\n", bookorders[x]->element->category);
     }
 
-    Queue *que = dequeue("HOUSING01");
-    printf("%s\n", que->element->category);
-    
+    //Queue *que = dequeue("HOUSING01");
+    //printf("%s\n", que->element->category);
+    Cat *tmp=NULL;
+    HASH_FIND(hh, cat, "HOUSING01", 9,tmp);
+    if(tmp == NULL){
+	    printf("who knows\n");
+    }else{
+	    printf("this is the int %d\n", tmp->index);
+    }
     
     
 }

@@ -36,13 +36,17 @@ struct Cat {
 
 struct Report {
     Customer *customer;
+    int cust_id;                    //key
     Queue *successes;
     Queue *failures;
+    UT_hash_handle hh;
 };
 
 struct Queue {                      //Queue is a linked list
     Order *element;
     Queue *next;
+    float amount;
+    pthread_mutex_t mutex;
 };
 
 struct Order {

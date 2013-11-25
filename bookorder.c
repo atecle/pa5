@@ -13,6 +13,7 @@
 Customer *customers = NULL;
 Cat *cat = NULL;
 Queue *bookorders[100];
+Report *report = NULL;
 
 void create_cat(char *categories) {
     
@@ -37,6 +38,7 @@ void create_cat(char *categories) {
     
 }
 
+//adding into both Customer hashtable and Final Report Hashtable
 
 void create_db(FILE *db) {
     
@@ -46,22 +48,40 @@ void create_db(FILE *db) {
     while (fgets(line, MAX_LEN, db)) {
         
         Customer *ctmr = NULL;
+        Customer *f_ctmr = NULL;
+        
         ctmr = (Customer*)malloc(sizeof(Customer));
+        f_ctmr = (Customer*)malloc(sizeof(Customer));
+        
         token = strtok(line, "|");
         strcpy(ctmr->name, token);
         token = strtok(NULL, "|");
         ctmr->id = atoi(token);
+        f_ctmr->id = ctmr->id;
+        
         token = strtok(NULL, "|");
         ctmr->debit = atof(token);
+        f_ctmr->debit = ctmr->debit;
+        
         token = strtok(NULL, "|");
         strcpy(ctmr->address, token);
         token = strtok(NULL, "|");
         strcpy(ctmr->state, token);
         token = strtok(NULL, "|");
         strcpy(ctmr->zip, token);
-        pthread_mutex_init(&ctmr->mutex, NULL);
-        HASH_ADD_INT(customers, id, ctmr);
         
+        pthread_mutex_init(&ctmr->mutex, NULL);
+        pthread_mutex_init(&f_ctmr->mutex, NULL);
+        
+        Report *rep = NULL;
+        rep = (Report*)malloc(sizeof(Report));
+        rep->customer = f_ctmr;
+        rep->cust_id = f_ctmr->id;
+        rep->successes = NULL;
+        rep->failures = NULL;
+        
+        HASH_ADD_INT(customers, id, ctmr);
+        HASH_ADD_INT(report, cust_id, rep);
     }
     
 }

@@ -140,6 +140,11 @@ void read_orders(FILE *orders) {
 void enqueue(int index, Queue *order) {
     
     LL_APPEND(bookorders[index], order);
+    Queue *ptr = bookorders[index];
+    while (ptr->next != NULL) {
+        ptr= ptr->next;
+    }
+    printf("TITLE: %s\n", ptr->element->title);
     
 }
 
@@ -166,7 +171,7 @@ void process_order(Queue *q) {
     Report *person = NULL;
     
 	HASH_FIND_INT(customers, &(q->element->cust_id), tmp);
-    
+
 	while (tmp != NULL) {
         
         HASH_FIND_INT(report, &(q->element->cust_id), person);

@@ -114,6 +114,9 @@ void read_orders(FILE *orders) {
         int x = cat->index;
         printf("%s\n", bookorders[x]->element->category);
     }
+
+    Queue *que = dequeue("HOUSING01");
+    printf("%s\n", que->element->category);
     
     
     
@@ -126,17 +129,18 @@ void enqueue(int index, Queue *order) {
 }
 
 Queue* dequeue(char *string) {
-    Queue *ptr;
+    Queue *ptr = NULL;
     Cat *temp = NULL;
     HASH_FIND_STR(cat, string, temp);
-    
     if (temp == NULL)
     {
+        printf("SHIT\n");
         return NULL; //exception
     }
     else
     {
         ptr = bookorders[temp->index];
+        
         DL_DELETE(ptr, ptr);
     }
         return ptr;

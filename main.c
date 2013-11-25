@@ -26,8 +26,10 @@ int main(int argc, char **argv) {
     }
   
     create_cat(argv[3]);
-    
+    Customer *customers = NULL;
     create_db(db);
+    
+    if (customers == NULL) printf("NULL\n");
     
     pthread_t thr1, thr2;
     

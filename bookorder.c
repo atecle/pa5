@@ -96,7 +96,7 @@ void read_orders(FILE *orders) {
         order->cost = atof(token);
         
         token = strtok(NULL, "|");
-        order->quantity = atoi(token);
+        order->cust_id = atoi(token);
         
         token = strtok(NULL, "|");                                  //tokenized category has trailing space that will cause hash_find to return null
         char ret[strlen(token)];
@@ -118,12 +118,12 @@ void read_orders(FILE *orders) {
     
 
     Queue *que = dequeue("HOUSING01");
-       printf("Title: %s\t Cost: %f\t Quant: %d\t Cat: %s \n", que->element->title, que->element->cost, que->element->quantity, que->element->category);
+       printf("Title: %s\t Cost: %f\t Quant: %d\t Cat: %s \n", que->element->title, que->element->cost, que->element->cust_id, que->element->category);
     que = dequeue("HOUSING01");
-    printf("Title: %s\t Cost: %f\t Quant: %d\t Cat: %s \n", que->element->title, que->element->cost, que->element->quantity, que->element->category);
+    printf("Title: %s\t Cost: %f\t Quant: %d\t Cat: %s \n", que->element->title, que->element->cost, que->element->cust_id, que->element->category);
 
     que = dequeue("HOUSING01");
-    printf("Title: %s\t Cost: %f\t Quant: %d\t Cat: %s \n", que->element->title, que->element->cost, que->element->quantity, que->element->category);
+    printf("Title: %s\t Cost: %f\t Quant: %d\t Cat: %s \n", que->element->title, que->element->cost, que->element->cust_id, que->element->category);
 
     /* Cat *tmp=NULL;
     HASH_FIND_STR(cat, "HOUSING01", tmp);

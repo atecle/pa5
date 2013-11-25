@@ -196,5 +196,29 @@ void process_order(Queue *q) {
         HASH_FIND_INT(customers, &(q->element->cust_id), tmp);
         printf("in processorder\n");
 	}
-    printf("test\n");
 }
+
+void print_out() {
+    
+    Report *tmp1, *tmp2;
+    
+    HASH_ITER(hh, report, tmp1, tmp2) {
+        printf("=== BEGIN CUSTOMER INFO ====\n");
+        printf("### BALANCE ###\n");
+        printf("Customer name: %s\n", tmp1->customer->name);
+        printf("Remaining Balance: %f\n", tmp1->customer->debit);
+        Queue *succ = tmp1->successes, *fail = tmp1->failures;
+        printf("### SUCCESSFUL ORDERS ####\n");
+        while (succ != NULL) {
+            printf("%s | %f | %f\n", succ->element->title, succ->element->cost, succ->amount);
+            succ = succ->next;
+        }
+        printf("### REJECTED ORDERS ###\n");
+        while (fail != NULL) {
+            printf("%s | %f\n", fail->element->title, fail->element->cost);
+            fail = fail->next;
+        }
+        printf("=== END CUSTOMER INFO === \n");
+    }
+}
+

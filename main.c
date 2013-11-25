@@ -48,6 +48,8 @@ int main(int argc, char **argv) {
         pthread_join(thread_array[j], NULL);
     }
     
+    print_out();
+    
     return 1;
     
 }

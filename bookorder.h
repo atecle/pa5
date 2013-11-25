@@ -77,5 +77,6 @@ Queue* dequeue(char *category);
 void enqueue(int index, Queue *order);
 char *read_helper(char *token, char *ret);
 void process_order(Queue *queue);
+void print_out();
 
 #endif

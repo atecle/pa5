@@ -169,36 +169,34 @@ void process_order(Queue *q) {
     
 	Customer *tmp = NULL;
     Report *person = NULL;
-    
-	HASH_FIND_INT(customers, &(q->element->cust_id), tmp);
-
-	while (tmp != NULL) {
-        
+    // q=q->next;
+	while (q != NULL) {
+        Queue *qq = q->next;
+        HASH_FIND_INT(customers, &(q->element->cust_id), tmp);
         HASH_FIND_INT(report, &(q->element->cust_id), person);
         
 		if  ((tmp->debit - q->element->cost) > 0) {                     //success
-            
+            // printf("here\n");
             pthread_mutex_lock(&person->lock);
 			pthread_mutex_lock(&tmp->mutex);
 			tmp->debit = tmp->debit - q->element->cost;
             person->customer->debit = tmp->debit;
             q->amount = tmp->debit;
-            LL_APPEND(person->successes, q);
+            Queue *ptr = q;
+            LL_APPEND(person->successes, ptr);
 			pthread_mutex_unlock(&tmp->mutex);
             pthread_mutex_unlock(&person->lock);
-            
-            
-		} else {                                                        //failure
-            
+		}else{                                                        //failure
+            // printf("where\n");
             pthread_mutex_lock(&person->lock);
-            LL_APPEND(person->failures, q);
-            pthread_mutex_unlock(&person->lock);
-            
+            Queue *ptr = q;
+            LL_APPEND(person->failures, ptr);
+            pthread_mutex_unlock(&person->lock);   
 		}
-        
-        q=q->next;
-        if (q == NULL) break; //bad might fix later
-        HASH_FIND_INT(customers, &(q->element->cust_id), tmp);
+        // free(q);
+        q=qq;
+        if (qq == NULL) break; //bad might fix later
+        // HASH_FIND_INT(customers, &(q->element->cust_id), tmp);
         printf("in processorder\n");
 	}
 }

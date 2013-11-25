@@ -125,7 +125,11 @@ void enqueue(int index, Queue *order) {
   
 }
 
-Queue* dequeue(Queue *queue) {
+Queue* dequeue(char *string) {
+    Cat *temp = NULL;
+    HASH_FIND_STR(cat, string, temp);
+    if (temp == NULL) return NULL; //exception
+    
     
 }
 

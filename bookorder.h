@@ -40,7 +40,7 @@ struct Queue {
 struct Order {
     char title[MAX_LEN];
     float cost;
-    int quantity;
+    int cust_id;
     char category[MAX_LEN];         // key
     pthread_mutex_t mutex;
 };

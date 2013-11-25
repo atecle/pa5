@@ -118,6 +118,7 @@ void read_orders(FILE *orders) {
     
 
     Queue *que = dequeue("HOUSING01");
+       printf("Title: %s\t Cost: %f\t Quant: %d\t Cat: %s \n", que->element->title, que->element->cost, que->element->quantity, que->element->category);
     que = dequeue("HOUSING01");
     printf("Title: %s\t Cost: %f\t Quant: %d\t Cat: %s \n", que->element->title, que->element->cost, que->element->quantity, que->element->category);
     
@@ -150,8 +151,9 @@ Queue* dequeue(char *string) {
     else
     {
         printf("it works\n");
-        ptr = bookorders[temp->index];  
-        LL_DELETE(ptr, ptr);
+        ptr = bookorders[temp->index];
+        bookorders[temp->index] = bookorders[temp->index]->next;
+    //    LL_DELETE(ptr, q);
     }
         return ptr;
                         

@@ -121,8 +121,11 @@ void read_orders(FILE *orders) {
        printf("Title: %s\t Cost: %f\t Quant: %d\t Cat: %s \n", que->element->title, que->element->cost, que->element->quantity, que->element->category);
     que = dequeue("HOUSING01");
     printf("Title: %s\t Cost: %f\t Quant: %d\t Cat: %s \n", que->element->title, que->element->cost, que->element->quantity, que->element->category);
-    
-   /* Cat *tmp=NULL;
+
+    que = dequeue("HOUSING01");
+    printf("Title: %s\t Cost: %f\t Quant: %d\t Cat: %s \n", que->element->title, que->element->cost, que->element->quantity, que->element->category);
+
+    /* Cat *tmp=NULL;
     HASH_FIND_STR(cat, "HOUSING01", tmp);
     if (tmp == NULL) {
 	    printf("who knows\n");

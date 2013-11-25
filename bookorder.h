@@ -34,7 +34,6 @@ struct Cat {
 
 struct Queue {
     Order *element;
-    Queue *prev;
     Queue *next;
 };
 

@@ -1,5 +1,5 @@
 bookorder: library
-	gcc main.c -L. -l bookorder -o bookorder
+	gcc -pthread main.c -L. -l bookorder -o bookorder
 
 library: bookorder.o 
 	ar rcs libbookorder.a bookorder.o

@@ -105,25 +105,27 @@ void read_orders(FILE *orders) {
         
         Cat *temp = NULL;
         HASH_FIND_STR(cat, order->category, temp);
+        if (temp == NULL) printf("WHAT\n");
         Queue *q = malloc(sizeof(Queue));
         q->element = order;
         enqueue(temp->index, q);
     }
     
-    for (cat; cat!=NULL; cat= cat->hh.next) {
+   /* for (cat; cat!=NULL; cat= cat->hh.next) {
         int x = cat->index;
         printf("%s\n", bookorders[x]->element->category);
-    }
+    }*/
 
-    //Queue *que = dequeue("HOUSING01");
-    //printf("%s\n", que->element->category);
-    Cat *tmp=NULL;
-    HASH_FIND(hh, cat, "HOUSING01", 9,tmp);
-    if(tmp == NULL){
+    Queue *que = dequeue("HOUSING01");
+    printf("%s\n", que->element->category);
+    
+   /* Cat *tmp=NULL;
+    HASH_FIND_STR(cat, "HOUSING01", tmp);
+    if (tmp == NULL) {
 	    printf("who knows\n");
     }else{
 	    printf("this is the int %d\n", tmp->index);
-    }
+    } */
     
     
 }
@@ -145,6 +147,7 @@ Queue* dequeue(char *string) {
     }
     else
     {
+        printf("it works\n");
         ptr = bookorders[temp->index];
         
         DL_DELETE(ptr, ptr);

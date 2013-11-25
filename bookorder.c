@@ -59,9 +59,11 @@ void create_db(FILE *db) {
         strcpy(ctmr->state, token);
         token = strtok(NULL, "|");
         strcpy(ctmr->zip, token);
+	pthead_mutex_init(&ctmr->mutex, NULL);
         HASH_ADD_INT(customers, id, ctmr);
         
     }
+
 }
 
 char* read_helper(char *s, char *ret) {
@@ -161,4 +163,22 @@ Queue* dequeue(char *string) {
         return ptr;
                         
 }
-                        
+         
+void process_order(Queue *q){
+	
+	Queue *tmp;
+	HASH_FIND_INT(customers, &(q->element->id), tmp);
+	if(tmp==NULL){
+		printf("NULL, do something here");
+	}else{
+		if(tmp->debit - q->element->cost >0){
+			pthread_mutex_lock(&tmp->mutex);
+			tmp->debit = tmp->debit - q->element->cost;
+			pthread_mutex_unlock(&tmp->mutex);
+		}else{
+			//do something
+		}
+	}
+
+}
+

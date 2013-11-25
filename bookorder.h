@@ -25,6 +25,7 @@ typedef struct Customer Customer;
 typedef struct Order Order;
 typedef struct Cat Cat;
 typedef struct Queue Queue;
+typedef struct Report Report;
 
 struct Cat {
     char category[MAX_LEN];         //easier to use uthash when string keys are static arrays not pointers
@@ -32,7 +33,14 @@ struct Cat {
     UT_hash_handle hh; 
 };
 
-struct Queue {
+
+struct Report {
+    Customer *customer;
+    Queue *successes;
+    Queue *failures;
+};
+
+struct Queue {                      //Queue is a linked list
     Order *element;
     Queue *next;
 };

@@ -143,12 +143,15 @@ Queue* dequeue(char *string) {
 
 void process_order(Queue *q){
 	
+    int count = 0;
     
 	Customer *tmp = NULL;
 	HASH_FIND_INT(customers, &(q->element->cust_id), tmp);
     
-	while (tmp != NULL){
+	while (tmp != NULL) {
         
+       count++;
+        printf("Count: %d\t Cat: %s\n", count, q->element->category);
 		if((tmp->debit - q->element->cost) > 0) {
             
 			pthread_mutex_lock(&tmp->mutex);

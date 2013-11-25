@@ -126,10 +126,16 @@ void enqueue(int index, Queue *order) {
 }
 
 Queue* dequeue(char *string) {
+    Queue ptr;
     Cat *temp = NULL;
     HASH_FIND_STR(cat, string, temp);
-    if (temp == NULL) return NULL; //exception
-    
+    if (temp == NULL){
+	return NULL; //exception
+    }else{
+	ptr = bookorder[temp->index);
+	DL_DELETE(ptr. ptr);
+    }
+    return ptr;
     
 }
 

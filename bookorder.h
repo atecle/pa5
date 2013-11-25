@@ -40,13 +40,13 @@ struct Report {
     Queue *successes;
     Queue *failures;
     UT_hash_handle hh;
+    pthread_mutex_t lock;
 };
 
 struct Queue {                      //Queue is a linked list
     Order *element;
     Queue *next;
     float amount;
-    pthread_mutex_t mutex;
 };
 
 struct Order {
@@ -54,7 +54,6 @@ struct Order {
     float cost;
     int cust_id;
     char category[MAX_LEN];         // key
-    pthread_mutex_t mutex;
 };
 
 struct Customer {

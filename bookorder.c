@@ -55,6 +55,7 @@ void create_db(FILE *db) {
         
         token = strtok(line, "|");
         strcpy(ctmr->name, token);
+        strcpy(f_ctmr->name, token);
         token = strtok(NULL, "|");
         ctmr->id = atoi(token);
         f_ctmr->id = ctmr->id;
@@ -72,13 +73,14 @@ void create_db(FILE *db) {
         
         pthread_mutex_init(&ctmr->mutex, NULL);
         pthread_mutex_init(&f_ctmr->mutex, NULL);
-        
+    
         Report *rep = NULL;
         rep = (Report*)malloc(sizeof(Report));
         rep->customer = f_ctmr;
         rep->cust_id = f_ctmr->id;
         rep->successes = NULL;
         rep->failures = NULL;
+        pthread_mutex_init(&rep->lock, NULL);
         
         HASH_ADD_INT(customers, id, ctmr);
         HASH_ADD_INT(report, cust_id, rep);
@@ -147,15 +149,12 @@ Queue* dequeue(char *string) {
     HASH_FIND_STR(cat, string, temp);
     if (temp == NULL)
     {
-        printf("SHIT\n");
-        return NULL; //exception
+        return NULL;                                //exception
     }
     else
     {
-        printf("it works\n");
         ptr = bookorders[temp->index];
         bookorders[temp->index] = bookorders[temp->index]->next;
-        //    LL_DELETE(ptr, q);
     }
     return ptr;
     

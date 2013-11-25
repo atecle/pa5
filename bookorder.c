@@ -59,11 +59,11 @@ void create_db(FILE *db) {
         strcpy(ctmr->state, token);
         token = strtok(NULL, "|");
         strcpy(ctmr->zip, token);
-	pthead_mutex_init(&ctmr->mutex, NULL);
+        pthread_mutex_init(&ctmr->mutex, NULL);
         HASH_ADD_INT(customers, id, ctmr);
         
     }
-
+    
 }
 
 char* read_helper(char *s, char *ret) {
@@ -113,27 +113,23 @@ void read_orders(FILE *orders) {
         enqueue(temp->index, q);
     }
     
-   /* for (cat; cat!=NULL; cat= cat->hh.next) {
-        int x = cat->index;
-        printf("%s\n", bookorders[x]->element->category);
-    }*/
+    /* for (cat; cat!=NULL; cat= cat->hh.next) {
+     int x = cat->index;
+     printf("%s\n", bookorders[x]->element->category);
+     }*/
     
-
+    
     Queue *que = dequeue("HOUSING01");
-       printf("Title: %s\t Cost: %f\t Quant: %d\t Cat: %s \n", que->element->title, que->element->cost, que->element->cust_id, que->element->category);
-    que = dequeue("HOUSING01");
     printf("Title: %s\t Cost: %f\t Quant: %d\t Cat: %s \n", que->element->title, que->element->cost, que->element->cust_id, que->element->category);
-
-    que = dequeue("HOUSING01");
-    printf("Title: %s\t Cost: %f\t Quant: %d\t Cat: %s \n", que->element->title, que->element->cost, que->element->cust_id, que->element->category);
-
+    process_order(que);
+    
     /* Cat *tmp=NULL;
-    HASH_FIND_STR(cat, "HOUSING01", tmp);
-    if (tmp == NULL) {
-	    printf("who knows\n");
-    }else{
-	    printf("this is the int %d\n", tmp->index);
-    } */
+     HASH_FIND_STR(cat, "HOUSING01", tmp);
+     if (tmp == NULL) {
+     printf("who knows\n");
+     }else{
+     printf("this is the int %d\n", tmp->index);
+     } */
     
     
 }
@@ -158,20 +154,21 @@ Queue* dequeue(char *string) {
         printf("it works\n");
         ptr = bookorders[temp->index];
         bookorders[temp->index] = bookorders[temp->index]->next;
-    //    LL_DELETE(ptr, q);
+        //    LL_DELETE(ptr, q);
     }
-        return ptr;
-                        
+    return ptr;
+    
 }
-         
+
 void process_order(Queue *q){
 	
-	Queue *tmp;
-	HASH_FIND_INT(customers, &(q->element->id), tmp);
+    
+	Customer *tmp;
+	HASH_FIND_INT(customers, &(q->element->cust_id), tmp);
 	if(tmp==NULL){
 		printf("NULL, do something here");
 	}else{
-		if(tmp->debit - q->element->cost >0){
+		if((tmp->debit - q->element->cost) >0){
 			pthread_mutex_lock(&tmp->mutex);
 			tmp->debit = tmp->debit - q->element->cost;
 			pthread_mutex_unlock(&tmp->mutex);
@@ -179,6 +176,6 @@ void process_order(Queue *q){
 			//do something
 		}
 	}
-
+    printf("in processorder\n");
 }
 

@@ -162,6 +162,7 @@ void process_order(Queue *q){
 		}
         
         q=q->next;
+        if (q == NULL) break; //bad might fix later
         HASH_FIND_INT(customers, &(q->element->cust_id), tmp);
         printf("in processorder\n");
 	}

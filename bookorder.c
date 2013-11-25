@@ -12,7 +12,7 @@
 
 Customer *customers = NULL;
 Cat *cat = NULL;
-//Queue *bookorders[100];
+Queue *bookorders[100];
 
 void create_cat(char *categories) {
     

@@ -49,6 +49,7 @@ int main(int argc, char **argv) {
     }
     
     print_out();
+    destroy_all();
     
     return 1;
     

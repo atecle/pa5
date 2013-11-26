@@ -72,7 +72,7 @@ void create_db(FILE *db) {
         strcpy(ctmr->zip, token);
         
         pthread_mutex_init(&ctmr->mutex, NULL);
-        pthread_mutex_init(&f_ctmr->mutex, NULL);
+        // pthread_mutex_init(&f_ctmr->mutex, NULL);
         
         Report *rep = NULL;
         rep = (Report*)malloc(sizeof(Report));
@@ -169,7 +169,6 @@ void process_order(Queue *q) {
     
 	Customer *tmp = NULL;
     Report *person = NULL;
-    // q=q->next;
 	while (q != NULL) {
         Queue *qq = q->next;
         HASH_FIND_INT(customers, &(q->element->cust_id), tmp);
@@ -196,8 +195,7 @@ void process_order(Queue *q) {
         // free(q);
         q=qq;
         if (qq == NULL) break; //bad might fix later
-        // HASH_FIND_INT(customers, &(q->element->cust_id), tmp);
-        printf("in processorder\n");
+        // printf("in processorder\n");
 	}
 }
 
@@ -213,7 +211,7 @@ void print_out() {
         Queue *succ = tmp1->successes, *fail = tmp1->failures;
         printf("### SUCCESSFUL ORDERS ####\n");
         while (succ != NULL) {
-            printf("%s | %f | %f\n", succ->element->title, succ->element->cost, succ->amount);
+            printf("%s | %f0.2 | %f\n", succ->element->title, succ->element->cost, succ->amount);
             succ = succ->next;
         }
         printf("### REJECTED ORDERS ###\n");
@@ -221,7 +219,23 @@ void print_out() {
             printf("%s | %f\n", fail->element->title, fail->element->cost);
             fail = fail->next;
         }
-        printf("=== END CUSTOMER INFO === \n");
+        printf("=== END CUSTOMER INFO === \n\n");
     }
+}
+
+void destroy_all(){
+    Report *rtmp, *urtmp;
+    Customer *ctmp, *uctmp;
+
+    HASH_ITER(hh, customers, ctmp, uctmp){
+        pthread_mutex_destroy(&ctmp->mutex);
+    }
+    HASH_ITER(hh, report, rtmp, urtmp){
+        pthread_mutex_destroy(&report->lock);
+    }
+    free(cat);
+    free(customers);
+    free(report);
+    free(bookorders[100]);
 }
 

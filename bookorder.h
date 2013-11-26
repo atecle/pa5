@@ -78,5 +78,6 @@ void enqueue(int index, Queue *order);
 char *read_helper(char *token, char *ret);
 void process_order(Queue *queue);
 void print_out();
+void destroy_all();
 
 #endif

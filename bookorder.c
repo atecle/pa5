@@ -209,16 +209,16 @@ void print_out() {
         fprintf(fp,"=== BEGIN CUSTOMER INFO ====\n");
         fprintf(fp,"### BALANCE ###\n");
         fprintf(fp,"Customer name: %s\n", tmp1->customer->name);
-        fprintf(fp,"Remaining Balance: %f\n", tmp1->customer->debit);
+        fprintf(fp,"Remaining Balance: %.2f\n", tmp1->customer->debit);
         Queue *succ = tmp1->successes, *fail = tmp1->failures;
         fprintf(fp,"### SUCCESSFUL ORDERS ####\n");
         while (succ != NULL) {
-            fprintf(fp,"%s | %f0.2 | %f\n", succ->element->title, succ->element->cost, succ->amount);
+            fprintf(fp,"%s | %.2f | %.2f\n", succ->element->title, succ->element->cost, succ->amount);
             succ = succ->next;
         }
         fprintf(fp,"### REJECTED ORDERS ###\n");
         while (fail != NULL) {
-            fprintf(fp,"%s | %f\n", fail->element->title, fail->element->cost);
+            fprintf(fp,"%s | %.2f\n", fail->element->title, fail->element->cost);
             fail = fail->next;
         }
         fprintf(fp,"=== END CUSTOMER INFO === \n\n");

@@ -8,26 +8,33 @@
 
 #include "bookorder.h"
 
-
+void usage() {
+    printf("USAGE: ./bookorder < database file > < book order file > < list of categories in double quotes separated by spaces >");
+    exit(0);
+}
 
 int main(int argc, char **argv) {
     
     if (argc < 4) {
-        printf("Incorrect number of inputs.");
-        exit(0);
+        usage();
     }
     
     FILE *db, *orders;
+    
     db = fopen(argv[1], "r");
     orders = fopen(argv[2], "r");
+    
     if (!db || !orders) {
         printf("ERROR: File(s) not found");
-        exit(0);
+        usage();
     }
   
+    /* creating and loading data structures */
+    
+    
     create_cat(argv[3]);
     create_db(db);
-    read_orders(orders); //main thread of execution acting as producer thread
+    read_orders(orders);
     
 
     
@@ -37,9 +44,11 @@ int main(int argc, char **argv) {
     int i = 0;
     
     for (cat; cat != NULL; cat = cat->hh.next) {
+        
         int ord_index = cat->index;
         id[i] = pthread_create(&thread_array[i], NULL, (void*)&process_order, (void*)bookorders[ord_index]);
         i++;
+        
     }
     
     int j;

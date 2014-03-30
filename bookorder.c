@@ -13,7 +13,12 @@
 Customer *customers = NULL;
 Cat *cat = NULL;
 Queue *bookorders[100];
-Report *report = NULL;
+Report *report = NULL;          //For final report print out
+
+
+//Input: Categories of books separated by spaces. ex: "SPORTS01 POLITICS01 HISTORY01", taken from command line
+//Creates hashtable of book categories
+
 
 void create_cat(char *categories) {
     
@@ -21,18 +26,25 @@ void create_cat(char *categories) {
     char *token = NULL;
     
     for (token = strtok(categories, " "); token != NULL; token = strtok(NULL, " ")) {
+        
         Cat *item =  NULL;
         item = malloc(sizeof(Cat));
+        
         char ret[strlen(token)];
         token = read_helper(token, ret);
         strcpy(item->category, token);
         item->index = index++;
+        
+        
         HASH_ADD_STR(cat, category, item);
+        
     }
     
     for (i; i < 100; i++) {
+        
         Queue *q = NULL;
         bookorders[i] = q;
+        
     }
     
     
@@ -72,7 +84,6 @@ void create_db(FILE *db) {
         strcpy(ctmr->zip, token);
         
         pthread_mutex_init(&ctmr->mutex, NULL);
-        // pthread_mutex_init(&f_ctmr->mutex, NULL);
         
         Report *rep = NULL;
         rep = (Report*)malloc(sizeof(Report));
@@ -88,13 +99,19 @@ void create_db(FILE *db) {
     
 }
 
+
+//to get rid new lines/tabs/etc while tokenizing
+
 char* read_helper(char *s, char *ret) {
     
     int i, index = 0;
+    
     for (i = 0; i < strlen(s); i++) {
+        
         if (isalnum((int)s[i])) {
             ret[index] = s[i];
             index++;
+            
         }
     }
     
@@ -108,6 +125,7 @@ void read_orders(FILE *orders) {
     int index = 0;
     char line[MAX_LEN];
     char *token;
+    
     while (fgets(line, MAX_LEN, orders)) {
         
         Order *order = NULL;
@@ -122,14 +140,16 @@ void read_orders(FILE *orders) {
         token = strtok(NULL, "|");
         order->cust_id = atoi(token);
         
-        token = strtok(NULL, "|");                                  //tokenized category has trailing space that will cause hash_find to return null
+        token = strtok(NULL, "|");
         char ret[strlen(token)];
         token = read_helper(token, ret);
         strcpy(order->category, token);
         
         Cat *temp = NULL;
         HASH_FIND_STR(cat, order->category, temp);
+        
         if (temp == NULL) printf("WHAT\n");
+        
         Queue *q = malloc(sizeof(Queue));
         q->element = order;
         enqueue(temp->index, q);
@@ -141,10 +161,10 @@ void enqueue(int index, Queue *order) {
     
     LL_APPEND(bookorders[index], order);
     Queue *ptr = bookorders[index];
+    
     while (ptr->next != NULL) {
         ptr= ptr->next;
     }
-    // printf("TITLE: %s\n", ptr->element->title);
     
 }
 
@@ -169,33 +189,40 @@ void process_order(Queue *q) {
     
 	Customer *tmp = NULL;
     Report *person = NULL;
+    
 	while (q != NULL) {
         Queue *qq = q->next;
         HASH_FIND_INT(customers, &(q->element->cust_id), tmp);
         HASH_FIND_INT(report, &(q->element->cust_id), person);
         
 		if  ((tmp->debit - q->element->cost) > 0) {                     //success
-            // printf("here\n");
+    
             pthread_mutex_lock(&person->lock);
 			pthread_mutex_lock(&tmp->mutex);
+            
+            
 			tmp->debit = tmp->debit - q->element->cost;
             person->customer->debit = tmp->debit;
             q->amount = tmp->debit;
             Queue *ptr = q;
+            
+            
             LL_APPEND(person->successes, ptr);
 			pthread_mutex_unlock(&tmp->mutex);
             pthread_mutex_unlock(&person->lock);
-		}else{                                                        //failure
-            // printf("where\n");
+            
+		} else {                                                        //failure
+   
             pthread_mutex_lock(&person->lock);
             Queue *ptr = q;
             LL_APPEND(person->failures, ptr);
             pthread_mutex_unlock(&person->lock);   
 		}
-        // free(q);
+
         q=qq;
-        if (qq == NULL) break; //bad might fix later
-        // printf("in processorder\n");
+        
+        if (qq == NULL) break;
+       
 	}
 }
 
@@ -225,6 +252,7 @@ void print_out() {
     }
 }
 
+//useless 
 void destroy_all(){
     Report *rtmp, *urtmp;
     Customer *ctmp, *uctmp;

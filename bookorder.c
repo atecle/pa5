@@ -266,6 +266,6 @@ void destroy_all(){
     free(cat);
     free(customers);
     free(report);
-    free(bookorders[100]);
+//    free(bookorders[100]);  test
 }
 
